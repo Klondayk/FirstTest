@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Custom Modal</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+        }
+        .modal-container {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            width: 800px;
+            display: grid;
+            grid-template-areas: 
+                "client-details job-type"
+                "service-location scheduled";
+            grid-gap: 20px;
+        }
+        .client-details { grid-area: client-details; }
+        .job-type { grid-area: job-type; }
+        .service-location { grid-area: service-location; }
+        .scheduled { grid-area: scheduled; }
+
+        .form-section {
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        .form-section h3 {
+            margin-top: 0;
+        }
+
+        .form-section input, .form-section select {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        .form-section .snackbar {
+            margin-top: 10px;
+            color: red;
+        }
+
+        .button-container {
+            margin-top: 20px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .button-container button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .create-job {
+            background-color: yellow;
+        }
+
+        .save-info {
+            background-color: lightgray;
+        }
+    </style>
+</head>
+<body>
+    <div class="modal-container">
+        <div class="form-section client-details">
+            <h3>Client Details</h3>
+            <form id="client-details-form">
+                <input type="text" name="first_name" placeholder="First Name" required>
+                <input type="text" name="last_name" placeholder="Last Name" required>
+                <input type="text" name="phone" placeholder="Phone" required>
+                <input type="email" name="email" placeholder="Email" required>
+            </form>
+        </div>
+        <div class="form-section job-type">
+            <h3>Job Type</h3>
+            <form id="job-type-form">
+                <select name="job_type" required>
+                    <option value="" disabled selected>Select Job Type</option>
+                    <option value="plumbing">Plumbing</option>
+                    <option value="electrical">Electrical</option>
+                    <option value="carpentry">Carpentry</option>
+                </select>
+                <div class="snackbar" id="job-type-snackbar"></div>
+                <input type="text" name="job_details" placeholder="Details" required>
+            </form>
+        </div>
+        <div class="form-section service-location">
+            <h3>Service Location</h3>
+            <form id="service-location-form">
+                <input type="text" name="address" placeholder="Address" required>
+                <input type="text" name="city" placeholder="City" required>
+                <input type="text" name="district" placeholder="District" required>
+                <input type="text" name="postal_code" placeholder="Postal Code" required>
+                <div class="snackbar" id="service-location-snackbar"></div>
+            </form>
+        </div>
+        <div class="form-section scheduled">
+            <h3>Scheduled</h3>
+            <form id="scheduled-form">
+                <input type="date" name="date" required>
+                <input type="time" name="time_from" required>
+                <input type="time" name="time_to" required>
+                <div class="snackbar" id="scheduled-snackbar"></div>
+            </form>
+        </div>
+    </div>
+    <div class="button-container">
+        <button class="create-job" onclick="handleCreateJob()">Create Job</button>
+        <button class="save-info" onclick="handleSaveInfo()">Save Info</button>
+    </div>
+
+    <script>
+        function handleCreateJob() {
+            const clientDetailsForm = document.getElementById('client-details-form');
+            const jobTypeForm = document.getElementById('job-type-form');
+            const serviceLocationForm = document.getElementById('service-location-form');
+            const scheduledForm = document.getElementById('scheduled-form');
+
+            const allValid = [clientDetailsForm, jobTypeForm, serviceLocationForm, scheduledForm].every(form => form.checkValidity());
+
+            if (!allValid) {
+                alert('Please fill in all fields.');
+                document.querySelector('input[name="address"]').style.borderColor = 'red'; // Highlight address field
+                return;
+            }
+
+            alert('Job created successfully!');
+            // Add logic here to handle form submission (e.g., send data to the server)
+        }
+
+        function handleSaveInfo() {
+            alert('Info saved successfully!');
+            // Add logic here to handle saving the information
+        }
+    </script>
+</body>
+</html>
+<script>
+    (async function () {
+        const sdk = await new AppExtensionsSdk().initialize();
+        await sdk.execute(AppExtensionsSdk.Command.RESIZE, { width: 800, height: 800 });
+    })();
+</script>
